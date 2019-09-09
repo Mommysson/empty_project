@@ -1,28 +1,62 @@
-CREATE TABLE IF NOT EXISTS Person (
-    id         INTEGER              COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT ,
-    version    INTEGER NOT NULL     COMMENT 'Служебное поле hibernate',
-    first_name VARCHAR(50) NOT NULL COMMENT 'Имя',
-    age        INTEGER  NOT NULL    COMMENT 'Возраст'
+CREATE TABLE IF NOT EXISTS Organization (
+    id         INTEGER      NOT NULL  COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT ,
+    version    INTEGER      NOT NULL  COMMENT 'Служебное поле hibernate',
+    name       VARCHAR(255) NOT NULL  COMMENT 'Наименование',
+    fullName   VARCHAR(255) NOT NULL  COMMENT 'Полное наименование',
+    inn        INTEGER      NOT NULL  COMMENT 'ИНН',
+    kpp        INTEGER      NOT NULL  COMMENT 'КПП',
+    address    VARCHAR(255) NOT NULL  COMMENT 'Адрес',
+    phone      INTEGER                COMMENT 'Телефон',
+    isActive   BIT                    COMMENT 'Активен'
 );
-COMMENT ON TABLE Person IS 'Человек';
+COMMENT ON TABLE Organization IS 'Компания';
 
-CREATE TABLE IF NOT EXISTS House (
-    id         INTEGER              COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT ,
-    version    INTEGER NOT NULL     COMMENT 'Служебное поле hibernate',
-    address    VARCHAR(50) NOT NULL COMMENT 'Адрес'
+CREATE TABLE IF NOT EXISTS Office (
+    id         INTEGER      NOT NULL  COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT ,
+    version    INTEGER      NOT NULL  COMMENT 'Служебное поле hibernate',
+    name       VARCHAR(255) NOT NULL  COMMENT 'Наименование',
+    orgId      INTEGER      NOT NULL  COMMENT 'Уникальный идентификатор компании'
+    address    VARCHAR(255) NOT NULL  COMMENT 'Адрес',
+    phone      INTEGER                COMMENT 'Телефон',
+    isActive   BIT                    COMMENT 'Активен'
 );
-COMMENT ON TABLE House IS 'Дом';
+COMMENT ON TABLE Office IS 'Офис';
+ALTER TABLE Office ADD FOREIGN KEY (Organization) REFERENCES orgId(id);
 
-CREATE TABLE IF NOT EXISTS Person_House (
-    person_id   INTEGER  NOT NULL COMMENT 'Уникальный идентификатор человека',
-    house_id    INTEGER  NOT NULL COMMENT 'Уникальный идентификатор дома',
-
-    PRIMARY KEY (person_id, house_id)
+CREATE TABLE IF NOT EXISTS User (
+    id              INTEGER      NOT NULL  COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT ,
+    version         INTEGER      NOT NULL  COMMENT 'Служебное поле hibernate',
+    firstName       VARCHAR(255) NOT NULL  COMMENT 'Имя',
+    lastName        VARCHAR(255) NOT NULL  COMMENT 'Фамилия',
+    middleName      VARCHAR(255)           COMMENT 'Отчество',
+    officeId        INTEGER      NOT NULL  COMMENT 'Уникальный идентификатор офиса'
+    jobTitle        VARCHAR(255) NOT NULL  COMMENT 'Должность',
+    address         VARCHAR(255)           COMMENT 'Место жительства',
+    phone           INTEGER                COMMENT 'Телефон',
+    isIdentified    BIT                    COMMENT 'Идентифицирован'
+    docName         VARCHAR(255)           COMMENT 'Документ',
+    citizenshipName VARCHAR(255)           COMMENT 'Гражданство',
+    docCode         INTEGER                COMMENT 'Код документа'
+    docNumber       INTEGER                COMMENT 'Номер документа'
+    docDate         DATE                   COMMENT 'Дата выдачи документа'
+    citizenshipCode INTEGER                COMMENT 'Код гражданства'
 );
-COMMENT ON TABLE Person_House IS 'join-таблица для связи человека и дома';
+COMMENT ON TABLE User IS 'Сотрудник';
+ALTER TABLE User ADD FOREIGN KEY (Office) REFERENCES officeId(id);
+ALTER TABLE User ADD FOREIGN KEY (Docs) REFERENCES docCode(code);
+ALTER TABLE User ADD FOREIGN KEY (Docs) REFERENCES docName(name);
+ALTER TABLE User ADD FOREIGN KEY (Countries) REFERENCES citizenshipName(name);
+ALTER TABLE User ADD FOREIGN KEY (Countries) REFERENCES citizenshipCode(code);
 
-CREATE INDEX IX_Person_House_Id ON Person_House (house_id);
-ALTER TABLE Person_House ADD FOREIGN KEY (house_id) REFERENCES House(id);
 
-CREATE INDEX IX_House_Person_Id ON Person_House (person_id);
-ALTER TABLE Person_House ADD FOREIGN KEY (person_id) REFERENCES Person(id);
+CREATE TABLE IF NOT EXISTS Docs (
+    name            VARCHAR(255) NOT NULL  COMMENT 'Название документа',
+    code            INTEGER      NOT NULL  COMMENT 'Код документа'
+);
+COMMENT ON TABLE Docs IS 'Документы';
+
+CREATE TABLE IF NOT EXISTS Countries (
+    name            VARCHAR(255) NOT NULL  COMMENT 'Название страны',
+    code            INTEGER      NOT NULL  COMMENT 'Код страны'
+);
+СOMMENT ON TABLE Countries IS 'Страны';
