@@ -3,20 +3,16 @@ package ru.bellintegrator.practice.view;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
-@ApiModel(description = "Человек")
-public class PersonView {
+@ApiModel(description = "Организация")
+public class OrganizationView {
 
     @NotEmpty
     @ApiModelProperty(value = "Уникальный идентификатор", hidden = true, example = "1")
     public String id;
 
-    @Size(max = 50)
+
     @NotEmpty(message = "name cannot be null")
     @ApiModelProperty(value = "Имя", example = "Иван")
     public String name;
