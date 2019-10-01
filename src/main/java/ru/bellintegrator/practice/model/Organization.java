@@ -35,7 +35,7 @@ public class Organization {
     /**
      * Полное наименование
      */
-    @Column(name = "fullName", length = 255, nullable = false)
+    @Column(name = "full_Name", length = 255, nullable = false)
     private String fullName;
 
     /**
@@ -67,8 +67,11 @@ public class Organization {
      * Флаг активности
      */
 
-    @Column(name = "isActive", length = 50)
+    @Column(name = "is_Active", length = 50)
     private boolean isActive;
+
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Office> offices;
 
     public Long getId() {
         return id;
@@ -146,10 +149,23 @@ public class Organization {
         this.offices = offices;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
-    private Set<Office> offices;
 
+    public Organization() {
 
+    }
+
+    public Organization(Long id, Integer version, String name, String fullName, Long inn, Long kpp, String address, Long phone, boolean isActive, Set<Office> offices) {
+        this.id = id;
+        this.version = version;
+        this.name = name;
+        this.fullName = fullName;
+        this.inn = inn;
+        this.kpp = kpp;
+        this.address = address;
+        this.phone = phone;
+        this.isActive = isActive;
+        this.offices = offices;
+    }
 
     public Set<Office> getOffices() {
         if (offices == null) {

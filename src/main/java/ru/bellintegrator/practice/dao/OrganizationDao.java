@@ -11,24 +11,26 @@ import java.util.List;
 public interface OrganizationDao {
 
     /**
-     * Получить все объекты Organization
-     *
-     * @return
+     * Получить объекты Organization
+     *@param name
+     * @param inn
+     * @param is_Active
+     * @return List
      */
-    List<Organization> getAllOrganizations();
+    List<Organization> getOrganizations(String name, Long inn,boolean is_Active);
 
     /**
      * Получить Organization по идентификатору
      *
      * @param id
-     * @return
+     * @return Organization
      */
-    Organization getOrganizationById(Long id);
+    Organization getOrganization(Long id);
 
     /**
-     * Сохранить Organization
+     * Обновить организацию по параметрам
      *
      * @param organization
      */
-    void saveOrganization(Organization organization);
+    void updateOrganization(Organization organization);
 }
