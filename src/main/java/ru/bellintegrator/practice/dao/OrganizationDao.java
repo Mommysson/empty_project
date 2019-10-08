@@ -1,7 +1,6 @@
 package ru.bellintegrator.practice.dao;
 
 import ru.bellintegrator.practice.model.Organization;
-
 import java.util.List;
 
 /*
@@ -17,20 +16,20 @@ public interface OrganizationDao {
      * @param is_Active
      * @return List
      */
-    List<Organization> getOrganizations(String name, Long inn,boolean is_Active);
+    List<Organization> getByName(String name, Long inn,boolean is_Active);
 
     /**
      * Получить Organization по идентификатору
      *
-     * @param id
+     * @param uuid
      * @return Organization
      */
-    Organization getOrganization(Long id);
+    Organization getById(String uuid);
 
     /**
      * Обновить организацию по параметрам
      *
      * @param organization
      */
-    void updateOrganization(Organization organization);
+    void update(Organization organization);
 }

@@ -1,7 +1,7 @@
 package ru.bellintegrator.practice.service;
 
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestParam;
+import ru.bellintegrator.practice.dto.OrganizationDTO;
 import ru.bellintegrator.practice.model.Organization;
 import java.util.List;
 
@@ -12,27 +12,25 @@ public interface OrganizationService {
     /**
      * Получить список по параметрам
      *
-     * @param name
-     * @param inn
-     * @param is_Active
+     * @param organizationDTO
      * @return List
      */
-    List <Organization> getOrganizations(String name, Long inn, boolean is_Active);
+    List <OrganizationDTO> getByName(OrganizationDTO organizationDTO);
 
     /**
      * Получить организацию по id
      *
-     * @param id
+     * @param uuid
 
      * @return Organization
      */
-    Organization getOrganization(Long id);
+    OrganizationDTO getById(String uuid);
 
     /**
      * Обновить организацию по параметрам
      *
      * @param organization
       */
-    void updateOrganization(Organization organization);
+    void update(Organization organization);
 
 }
