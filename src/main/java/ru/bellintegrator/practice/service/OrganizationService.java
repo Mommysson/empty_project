@@ -1,11 +1,10 @@
 package ru.bellintegrator.practice.service;
 
-import org.springframework.validation.annotation.Validated;
 import ru.bellintegrator.practice.dto.OrganizationDTO;
 import ru.bellintegrator.practice.model.Organization;
 import java.util.List;
 
-@Validated
+
 public interface OrganizationService {
 
 
