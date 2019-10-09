@@ -1,50 +1,68 @@
 package ru.bellintegrator.practice.service;
 
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Service;
 import ru.bellintegrator.practice.dao.OrganizationDaoImpl;
+import ru.bellintegrator.practice.dto.OrganizationDTO;
 import ru.bellintegrator.practice.model.Organization;
-
-import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
-
 
 /*
 Сервис организации
  */
-@Validated
+@Service
 public class OrganizationServiceImpl implements OrganizationService{
 
     OrganizationDaoImpl organizationDaoImpl;
 
-
-
     /**
-     * Получить организацию по идентификатору
-     *@param name
-     *@param inn
-     *@param isActive
-     * @return {@Organization}
+     * {@inheritDoc}
      */
+
     @Override
-    public List<Organization> getOrganizations(String name, Long inn, boolean isActive) {
-        return organizationDaoImpl.getOrganizations(name,inn,isActive);
+    public List<OrganizationDTO> getByName(OrganizationDTO organizationDTO) {
+        List<OrganizationDTO> dtoList = new ArrayList<>();
+        if (organizationDTO != null && organizationDTO.name != null) {
+            List<Organization> orgList = organizationDaoImpl.getByName(organizationDTO.name, organizationDTO.inn, organizationDTO.is_Active);
+
+            for (Organization organization : orgList) {
+                OrganizationDTO newDTO = new OrganizationDTO();
+                newDTO.uuid = organization.getUuid();
+                newDTO.name = organization.getName();
+                newDTO.is_Active = organization.isActive();
+                dtoList.add(newDTO);
+            }
+        }
+        return dtoList;
     }
     /**
-     * Получить организацию по идентификатору
-     *@param id
-     * @return {@Organization}
+     * {@inheritDoc}
      */
     @Override
-    public Organization getOrganization(Long id) {
-        return organizationDaoImpl.getOrganization(id);
+    public OrganizationDTO getById(String uuid) {
+        OrganizationDTO orgDTO = new OrganizationDTO();
+        if (uuid != null) {
+            Organization organization = organizationDaoImpl.getById(uuid);
+            orgDTO.uuid = organization.getUuid();
+            orgDTO.name = organization.getName();
+            orgDTO.full_Name = organization.getFullName();
+            orgDTO.inn = organization.getInn();
+            orgDTO.kpp = organization.getKpp();
+            orgDTO.address = organization.getAddress();
+            orgDTO.phone = organization.getPhone();
+            orgDTO.is_Active = organization.isActive();
+
+        }
+        return orgDTO;
     }
     /**
-     * Обновить организацию
-     *@param organization
+     * {@inheritDoc}
      */
     @Override
-    public void updateOrganization(Organization organization) {
-        organizationDaoImpl.updateOrganization(organization);
+    public void update(Organization organization) {
+        if (organization != null && organization.getUuid() != null) {
+            organizationDaoImpl.update(organization);
+        }
     }
 
 }

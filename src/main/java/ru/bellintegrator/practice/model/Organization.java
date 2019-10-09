@@ -1,24 +1,23 @@
 package ru.bellintegrator.practice.model;
 
-import jdk.internal.jline.internal.Nullable;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-
 
 
 /**
  * Компания
  */
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "organization")
 public class Organization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
-    private Long id;
+    @Column(name = "UUID")
+    private String uuid;
 
     /**
      * Служебное поле hibernate
@@ -29,13 +28,13 @@ public class Organization {
     /**
      * Наименование
      */
-    @Column(name = "name", length = 255, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     /**
      * Полное наименование
      */
-    @Column(name = "full_Name", length = 255, nullable = false)
+    @Column(name = "full_Name",nullable = false)
     private String fullName;
 
     /**
@@ -53,7 +52,7 @@ public class Organization {
     /**
      * Адрес
      */
-    @Column(name = "address", length = 255, nullable = false)
+    @Column(name = "address", nullable = false)
     private String address;
 
     /**
@@ -70,92 +69,9 @@ public class Organization {
     @Column(name = "is_Active", length = 50)
     private boolean isActive;
 
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<Office> offices;
 
-    public Long getId() {
-        return id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public Long getInn() {
-        return inn;
-    }
-
-    public Long getKpp() {
-        return kpp;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public Long getPhone() {
-        return phone;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public void setInn(Long inn) {
-        this.inn = inn;
-    }
-
-    public void setKpp(Long kpp) {
-        this.kpp = kpp;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setPhone(Long phone) {
-        this.phone = phone;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public void setOffices(Set<Office> offices) {
-        this.offices = offices;
-    }
-
-
-    public Organization() {
-
-    }
-
-    public Organization(Long id, Integer version, String name, String fullName, Long inn, Long kpp, String address, Long phone, boolean isActive, Set<Office> offices) {
-        this.id = id;
+    public Organization(String uuid, Integer version, String name, String fullName, Long inn, Long kpp, String address, Long phone, boolean isActive) {
+        this.uuid = uuid;
         this.version = version;
         this.name = name;
         this.fullName = fullName;
@@ -164,15 +80,9 @@ public class Organization {
         this.address = address;
         this.phone = phone;
         this.isActive = isActive;
-        this.offices = offices;
+
     }
 
-    public Set<Office> getOffices() {
-        if (offices == null) {
-            offices = new HashSet<>();
-        }
-        return offices;
-    }
 
 
 }

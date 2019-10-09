@@ -1,54 +1,53 @@
 package ru.bellintegrator.practice.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.bellintegrator.practice.dto.OrganizationDTO;
+import ru.bellintegrator.practice.dto.ResultMessage;
 import ru.bellintegrator.practice.model.Organization;
 import ru.bellintegrator.practice.service.OrganizationServiceImpl;
-
-
 import java.util.List;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 
 
 @RestController
-@RequestMapping(value = "api/organization", produces=APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/organization")
 public class OrganizationController {
-@Autowired
-OrganizationServiceImpl organizationServiceImpl;
+
+private final OrganizationServiceImpl organizationServiceImpl;
 
     public OrganizationController(OrganizationServiceImpl organizationServiceImpl) {
         this.organizationServiceImpl = organizationServiceImpl;
     }
 
     @PostMapping(value ="/list")
-    public List<Organization> getOrganizations (@RequestParam String name, @RequestParam Long inn, @RequestParam boolean isActive) {
-        return organizationServiceImpl.getOrganizations(name, inn, isActive);
+    public List<OrganizationDTO> getByName (@RequestBody OrganizationDTO organizationDTO) {
+        return organizationServiceImpl.getByName(organizationDTO);
 
     }
     @GetMapping(value ="/{id}")
-    public Organization getOrganization (@PathVariable Long id) {
-        return organizationServiceImpl.getOrganization(id);
+    public OrganizationDTO getById (@PathVariable String uuid) {
+        return organizationServiceImpl.getById(uuid);
 
     }
     @PostMapping(value ="/update")
     @ResponseBody
-    public String updateOrganization (@RequestParam Long id, @RequestParam String name, @RequestParam String full_Name,
-                                    @RequestParam Long inn,@RequestParam Long kpp,@RequestParam String address,
-                                    @RequestParam Long phone,@RequestParam boolean is_Active) {
+    public ResultMessage update (@RequestBody OrganizationDTO organizationDTO) {
         Organization organization = new Organization();
-        organization.setId(id);
-        organization.setName(name);
-        organization.setFullName(full_Name);
-        organization.setInn(inn);
-        organization.setKpp(kpp);
-        organization.setAddress(address);
-        organization.setPhone(phone);
-        organization.setActive(is_Active);
+        if (organizationDTO != null && organizationDTO.uuid != null && organizationDTO.name != null
+                && organizationDTO.full_Name != null && organizationDTO.inn != null && organizationDTO.kpp != null
+                && organizationDTO.address != null) {
+            organization.setUuid(organizationDTO.uuid);
+            organization.setName(organizationDTO.name);
+            organization.setFullName(organizationDTO.full_Name);
+            organization.setInn(organizationDTO.inn);
+            organization.setKpp(organizationDTO.kpp);
+            organization.setAddress(organizationDTO.address);
+            organization.setPhone(organizationDTO.phone);
+            organization.setActive(organizationDTO.is_Active);
+        }
+        organizationServiceImpl.update(organization);
 
-        organizationServiceImpl.updateOrganization(organization);
-return "“result”:”success”";
+        //TODO Метод должен возвращать не стоку, а объект, который будет потом сериализован в json вида {“result”:”success”}
+return new ResultMessage("success");
     }
 
 }
