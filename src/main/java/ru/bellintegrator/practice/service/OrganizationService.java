@@ -28,8 +28,8 @@ public interface OrganizationService {
     /**
      * Обновить организацию по параметрам
      *
-     * @param organization
+     * @param organizationDTO
       */
-    void update(Organization organization);
+    void update(OrganizationDTO organizationDTO);
 
 }

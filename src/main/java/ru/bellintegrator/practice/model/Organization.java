@@ -41,13 +41,13 @@ public class Organization {
      * ИНН
      */
     @Column(name = "inn", length = 50, nullable = false)
-    private Long inn;
+    private int inn;
 
     /**
      * КПП
      */
     @Column(name = "kpp", length = 50, nullable = false)
-    private Long kpp;
+    private int kpp;
 
     /**
      * Адрес
@@ -60,7 +60,7 @@ public class Organization {
      */
 
     @Column(name = "phone", length = 50)
-    private Long phone;
+    private int phone;
 
     /**
      * Флаг активности
@@ -70,7 +70,7 @@ public class Organization {
     private boolean isActive;
 
 
-    public Organization(String uuid, Integer version, String name, String fullName, Long inn, Long kpp, String address, Long phone, boolean isActive) {
+    public Organization(String uuid, Integer version, String name, String fullName, int inn, int kpp, String address, int phone, boolean isActive) {
         this.uuid = uuid;
         this.version = version;
         this.name = name;

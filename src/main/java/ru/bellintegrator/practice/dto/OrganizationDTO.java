@@ -1,14 +1,17 @@
 package ru.bellintegrator.practice.dto;
 
+import lombok.Data;
+
+@Data
 public class OrganizationDTO {
 
     public String uuid;
     public String name;
     public String full_Name;
-    public Long inn;
-    public Long kpp;
+    public int inn;
+    public int kpp;
     public String address;
-    public Long phone;
+    public int phone;
     public boolean is_Active;
 
 

@@ -16,7 +16,7 @@ public interface OrganizationDao {
      * @param is_Active
      * @return List
      */
-    List<Organization> getByName(String name, Long inn,boolean is_Active);
+    List<Organization> getByName(String name, int inn,boolean is_Active);
 
     /**
      * Получить Organization по идентификатору

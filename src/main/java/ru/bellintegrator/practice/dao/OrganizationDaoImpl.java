@@ -16,14 +16,14 @@ public class OrganizationDaoImpl implements OrganizationDao{
         this.em = em;
     }
     @Transactional
-    public List<Organization> getByName(String name, Long inn, boolean IsActive) {
+    public List<Organization> getByName(String name, int inn, boolean IsActive) {
         em.getTransaction().begin();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Organization> criteriaQuery = cb.createQuery(Organization.class);
         Root<Organization> organizationNameRoot = criteriaQuery.from(Organization.class);
         //TODO Ты проверял? Это работает?
-        criteriaQuery.select(cb.construct(Organization.class,organizationNameRoot.get("id"),
-                organizationNameRoot.get("name"),
+        criteriaQuery.select(cb.construct(Organization.class,organizationNameRoot.get("name"),
+                organizationNameRoot.get("inn"),
                 organizationNameRoot.get("is_Active")));
         criteriaQuery.where(cb.equal(organizationNameRoot.get("name"),name));
         return em.createQuery(criteriaQuery).getResultList();
