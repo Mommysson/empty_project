@@ -2,8 +2,7 @@ package ru.bellintegrator.practice.service;
 
 import org.springframework.stereotype.Service;
 import ru.bellintegrator.practice.dao.OrganizationDao;
-import ru.bellintegrator.practice.dao.OrganizationDaoImpl;
-import ru.bellintegrator.practice.dto.OrganizationDTO;
+import ru.bellintegrator.practice.dto.OrganizationDto;
 import ru.bellintegrator.practice.model.Organization;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,70 +13,97 @@ import java.util.List;
 @Service
 public class OrganizationServiceImpl implements OrganizationService{
 
-    OrganizationDao organizationDao;
+    private final OrganizationDao dao;
+
+    public OrganizationServiceImpl (OrganizationDao dao) {
+        this.dao = dao;
+    }
 
     /**
      * {@inheritDoc}
      */
-
     @Override
-    public List<OrganizationDTO> getByName(OrganizationDTO organizationDTO) {
-        List<OrganizationDTO> dtoList = new ArrayList<>();
-        if (organizationDTO != null && organizationDTO.name != null) {
-            List<Organization> orgList = organizationDao.getByName(organizationDTO.name, organizationDTO.inn, organizationDTO.is_Active);
+    public List<OrganizationDto> getByParams(String name, int inn, boolean is_Active) {
+
+        List<OrganizationDto> dtoList = new ArrayList<>();
+
+        if (name != null) {
+            List<Organization> orgList = dao.getByParams(name, inn, is_Active);
 
             for (Organization organization : orgList) {
-                OrganizationDTO newDTO = new OrganizationDTO();
-                newDTO.uuid = organization.getUuid();
-                newDTO.name = organization.getName();
-                newDTO.is_Active = organization.isActive();
-                dtoList.add(newDTO);
+                dtoList.add(convertToDtoByParams(organization));
             }
         }
         return dtoList;
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public OrganizationDTO getById(String uuid) {
-        OrganizationDTO orgDTO = new OrganizationDTO();
+    public OrganizationDto getById(String uuid) {
+        OrganizationDto orgDto = new OrganizationDto();
         if (uuid != null) {
-            Organization organization = organizationDao.getById(uuid);
-            orgDTO.uuid = organization.getUuid();
-            orgDTO.name = organization.getName();
-            orgDTO.full_Name = organization.getFullName();
-            orgDTO.inn = organization.getInn();
-            orgDTO.kpp = organization.getKpp();
-            orgDTO.address = organization.getAddress();
-            orgDTO.phone = organization.getPhone();
-            orgDTO.is_Active = organization.isActive();
-
+            orgDto = convertToDtoById(dao.getById(uuid));
         }
-        return orgDTO;
+        return orgDto;
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void update(OrganizationDTO organizationDTO) {
-
-        Organization organization = new Organization();
-        if (organizationDTO != null && organizationDTO.uuid != null && organizationDTO.name != null
-                && organizationDTO.full_Name != null && organizationDTO.inn != 0 && organizationDTO.kpp != 0
-                && organizationDTO.address != null) {
-            organization.setUuid(organizationDTO.uuid);
-            organization.setName(organizationDTO.name);
-            organization.setFullName(organizationDTO.full_Name);
-            organization.setInn(organizationDTO.inn);
-            organization.setKpp(organizationDTO.kpp);
-            organization.setAddress(organizationDTO.address);
-            organization.setPhone(organizationDTO.phone);
-            organization.setActive(organizationDTO.is_Active);
+    public void save(OrganizationDto orgDto) {
+        if (orgDto != null && orgDto.getFull_Name() != null && orgDto.getName() != null && orgDto.getInn() != 0
+                && orgDto.getKpp() != 0 && orgDto.getAddress() != null) {
+            dao.save(orgDto);
         }
-
-            organizationDao.update(organization);
-
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update(OrganizationDto orgDto) {
+        if (orgDto != null && orgDto.getUuid() != null && orgDto.getName() != null) {
+            dao.update(orgDto);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(String id) {
+        if (id!= null) {
+            dao.delete(id);
+        }
+    }
+
+    public OrganizationDto convertToDtoByParams(Organization organization) {
+
+        OrganizationDto orgDto = new OrganizationDto();
+
+        orgDto.setUuid(organization.getUuid());
+        orgDto.setName(organization.getName());
+        orgDto.set_Active(organization.is_Active());
+
+        return orgDto;
+    }
+
+    public OrganizationDto convertToDtoById(Organization organization) {
+
+        OrganizationDto orgDto = new OrganizationDto();
+
+        orgDto.setUuid(organization.getUuid());
+        orgDto.setName(organization.getName());
+        orgDto.set_Active(organization.is_Active());
+        orgDto.setFull_Name(organization.getFull_Name());
+        orgDto.setInn(organization.getInn());
+        orgDto.setKpp(organization.getKpp());
+        orgDto.setAddress(organization.getAddress());
+        orgDto.setPhone(organization.getPhone());
+
+        return orgDto;
+    }
 }

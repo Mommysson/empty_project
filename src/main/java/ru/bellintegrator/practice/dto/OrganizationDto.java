@@ -3,17 +3,16 @@ package ru.bellintegrator.practice.dto;
 import lombok.Data;
 
 @Data
-public class OrganizationDTO {
+public class OrganizationDto {
 
-    public String uuid;
-    public String name;
-    public String full_Name;
-    public int inn;
-    public int kpp;
-    public String address;
-    public int phone;
-    public boolean is_Active;
-
+    private String uuid;
+    private String name;
+    private String full_Name;
+    private int inn;
+    private int kpp;
+    private String address;
+    private int phone;
+    private boolean is_Active;
 
     @Override
     public String toString() {

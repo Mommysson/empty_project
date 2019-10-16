@@ -2,8 +2,13 @@ package ru.bellintegrator.practice.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
-
+import org.springframework.data.annotation.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Version;
 
 /**
  * Компания
@@ -35,7 +40,7 @@ public class Organization {
      * Полное наименование
      */
     @Column(name = "full_Name",nullable = false)
-    private String fullName;
+    private String full_Name;
 
     /**
      * ИНН
@@ -58,31 +63,25 @@ public class Organization {
     /**
      * Телефон
      */
-
     @Column(name = "phone", length = 50)
     private int phone;
 
     /**
      * Флаг активности
      */
-
     @Column(name = "is_Active", length = 50)
-    private boolean isActive;
+    private boolean is_Active;
 
-
-    public Organization(String uuid, Integer version, String name, String fullName, int inn, int kpp, String address, int phone, boolean isActive) {
+    public Organization(String uuid, Integer version, String name, String fullName,
+                        int inn, int kpp, String address, int phone, boolean isActive) {
         this.uuid = uuid;
         this.version = version;
         this.name = name;
-        this.fullName = fullName;
+        this.full_Name = fullName;
         this.inn = inn;
         this.kpp = kpp;
         this.address = address;
         this.phone = phone;
-        this.isActive = isActive;
-
+        this.is_Active = isActive;
     }
-
-
-
 }

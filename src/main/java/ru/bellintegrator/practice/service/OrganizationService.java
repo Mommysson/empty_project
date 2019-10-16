@@ -1,35 +1,41 @@
 package ru.bellintegrator.practice.service;
 
-import ru.bellintegrator.practice.dto.OrganizationDTO;
-import ru.bellintegrator.practice.model.Organization;
+import ru.bellintegrator.practice.dto.OrganizationDto;
 import java.util.List;
-
 
 public interface OrganizationService {
 
-
     /**
      * Получить список по параметрам
-     *
-     * @param organizationDTO
+     * @param name
+     * @param inn
+     * @param is_Active
      * @return List
      */
-    List <OrganizationDTO> getByName(OrganizationDTO organizationDTO);
+    List <OrganizationDto> getByParams(String name, int inn, boolean is_Active);
 
     /**
      * Получить организацию по id
-     *
-     * @param uuid
-
-     * @return Organization
+     * @param id
+     * @return OrganizationDto
      */
-    OrganizationDTO getById(String uuid);
+    OrganizationDto getById(String id);
 
     /**
      * Обновить организацию по параметрам
-     *
-     * @param organizationDTO
+     * @param orgDto
       */
-    void update(OrganizationDTO organizationDTO);
+    void update(OrganizationDto orgDto);
 
+    /**
+     * Сохранить организацию
+     * @param orgDto
+     */
+    void save(OrganizationDto orgDto);
+
+    /**
+     * Удалить организацию по id
+     * @param id
+     */
+    void delete(String id);
 }

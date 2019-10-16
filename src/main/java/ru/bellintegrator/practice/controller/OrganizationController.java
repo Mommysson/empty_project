@@ -1,41 +1,48 @@
 package ru.bellintegrator.practice.controller;
 
 import org.springframework.web.bind.annotation.*;
-import ru.bellintegrator.practice.dto.OrganizationDTO;
-import ru.bellintegrator.practice.dto.ResultMessage;
-import ru.bellintegrator.practice.model.Organization;
+import ru.bellintegrator.practice.dto.OrganizationDto;
 import ru.bellintegrator.practice.service.OrganizationService;
-import ru.bellintegrator.practice.service.OrganizationServiceImpl;
 import java.util.List;
-
 
 @RestController
 @RequestMapping(value = "api/organization")
 public class OrganizationController {
 
-private final OrganizationService organizationService;
+    private final OrganizationService service;
 
-    public OrganizationController(OrganizationServiceImpl organizationServiceImpl) {
-        this.organizationService = organizationServiceImpl;
+    public OrganizationController(OrganizationService service) {
+        this.service = service;
     }
 
     @PostMapping(value ="/list")
-    public List<OrganizationDTO> getByName (@RequestBody OrganizationDTO organizationDTO) {
-        return organizationService.getByName(organizationDTO);
+
+    public List<OrganizationDto> getByParams (@RequestParam("name") String name, @RequestParam("inn") int inn,
+                                              @RequestParam("is_Active") boolean is_Active) {
+        return service.getByParams(name, inn, is_Active);
 
     }
     @GetMapping(value ="/{id}")
-    public OrganizationDTO getById (@PathVariable String uuid) {
-        return organizationService.getById(uuid);
-
+    public OrganizationDto getById (@PathVariable String id) {
+        return service.getById(id);
     }
+
     @PostMapping(value ="/update")
     @ResponseBody
-    public OrganizationDTO update (@RequestBody OrganizationDTO organizationDTO) {
-
-        organizationService.update(organizationDTO);
-
-return organizationService.getById(organizationDTO.getUuid());
+    //TODO На выходе мы должны получить стоку вида {“result”:”success”} У тебя совсем не так.
+    public void update (@RequestBody OrganizationDto orgDto) {
+        service.update(orgDto);
     }
 
+    @PostMapping(value ="/save")
+    @ResponseBody
+    public void save(@RequestBody OrganizationDto orgDto) {
+        service.save(orgDto);
+    }
+
+    @PostMapping(value ="delete/{id}")
+    @ResponseBody
+    public void delete(@PathVariable(value = "id") String id) {
+        service.delete(id);
+    }
 }
